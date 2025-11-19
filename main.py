@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 # ======== IMAGE STORAGE CONFIG ========
-UPLOAD_DIR = "uploads"
+UPLOAD_DIR = "/tmp/uploads"
 
 # Make sure the upload directory exists
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -148,3 +148,4 @@ async def list_photos():
     files.sort(key=lambda x: x["filename"])
 
     return {"photos": files}
+
