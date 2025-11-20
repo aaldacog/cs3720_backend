@@ -10,7 +10,6 @@ app = FastAPI()
 
 # ======== CORS (HTTP) ========
 origins = ["*"]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -21,18 +20,10 @@ app.add_middleware(
 
 # ======== IMAGE STORAGE CONFIG ========
 UPLOAD_DIR = "/tmp/uploads"
-
 # Make sure the upload directory exists
 os.makedirs(UPLOAD_DIR, exist_ok=True)
-
 # Mount static files so images are served at /images/<filename>
 app.mount("/images", StaticFiles(directory=UPLOAD_DIR), name="images")
-
-
-@app.get("/")
-async def root():
-    return {"message": "FastAPI WebSocket chat server is running"}
-
 
 # ========= CHAT WEBSOCKET (EXISTING) =========
 
@@ -85,6 +76,11 @@ async def websocket_endpoint(websocket: WebSocket):
             pass
 
 
+@app.get("/")
+async def root():
+    return {"message": "FastAPI WebSocket chat server is running"}
+
+
 # ========= IMAGE UPLOAD & LISTING =========
 
 @app.post("/upload-photo")
@@ -125,7 +121,6 @@ async def upload_photo(file: UploadFile = File(...)):
         "content_type": file.content_type,
     }
 
-
 @app.get("/photos")
 async def list_photos():
     """
@@ -148,4 +143,4 @@ async def list_photos():
     files.sort(key=lambda x: x["filename"])
 
     return {"photos": files}
-
+  
